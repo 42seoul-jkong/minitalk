@@ -1,26 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.c                                         :+:      :+:    :+:   */
+/*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/07 02:59:42 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/11 18:07:49 by jkong            ###   ########.fr       */
+/*   Created: 2022/04/11 17:42:01 by jkong             #+#    #+#             */
+/*   Updated: 2022/04/11 20:29:38 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void	pretty_error(char *s)
+void	signal_bind(t_sighandler handler)
 {
-	puterr_safe(ANSI_ESC_BOLD);
-	puterr_safe("minitalk");
-	puterr_safe(": ");
-	puterr_safe(ANSI_ESC_FG_RED);
-	puterr_safe("error: ");
-	puterr_safe(ANSI_ESC_FG_DEFAULT);
-	puterr_safe(ANSI_ESC_NORMAL);
-	puterr_safe(s);
-	puterr_safe("\n");
+	struct sigaction	act;
+
+	act.sa_sigaction = handler;
+	sigemptyset(&act.sa_mask);
+	act.sa_flags = SA_SIGINFO;
+	sigaction(SIGUSR1, &act, NULL);
+	sigaction(SIGUSR2, &act, NULL);
+}
+
+void	signal_listen(t_appupdater updater)
+{
+	while (updater())
+		usleep(TIMEOUT_IN_MICROS);
 }

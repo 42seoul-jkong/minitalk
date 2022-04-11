@@ -16,7 +16,10 @@
 CC = cc
 RM = rm -f
 
-SRCS_BASE = minitalk.c
+SRCS_BASE = minitalk.c signal.c\
+			bit_buf.c bit_buf_ext.c \
+			safe_mem.c safe_io.c\
+			libft.c libft_try_atoi.c
 OBJECTS_DIR = objs/
 HEADER = minitalk.h
 
