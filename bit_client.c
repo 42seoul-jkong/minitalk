@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 22:16:30 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/12 01:15:53 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/12 18:00:52 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_client	*client_operation(t_client_operation op, pid_t arg)
 	}
 	if (op == DELETE && result)
 	{
-		free(result->buf);
+		bit_buf_destroy(result->buf);
 		free(result);
 	}
 	else if (result)

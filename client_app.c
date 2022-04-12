@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 02:59:42 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/12 17:55:14 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/12 18:01:06 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static t_client	*_connect_client(pid_t pid, char *str)
 	t_client		*client;
 
 	client = client_operation(PUT, pid);
-	free(client->buf);
+	bit_buf_destroy(client->buf);
 	client->buf = bit_buf_init();
 	if (str)
 	{
