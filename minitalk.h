@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 02:59:42 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/12 12:17:54 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/12 17:42:53 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ struct s_client
 {
 	pid_t		pid;
 	t_bit_buf	*buf;
+	int			sig;
 	int			fail;
 	t_client	*next;
 };
@@ -60,14 +61,21 @@ typedef enum e_client_operation
 	DELETE,
 }	t_client_operation;
 
+typedef enum e_client_error
+{
+	CE_AGAIN,
+	CE_OK,
+	CE_TIMEOUT,
+	CE_NOSUCHPROC,
+}	t_client_error;
+
 /*
- * 0.0025sec * 4cnt for 1msg/0.01sec.
- * to sufficient, use 0.002sec * 3cnt
+ * 800 sig/s
  */
 enum e_timeout_constant
 {
-	TIMEOUT_IN_MICROS = 2000000, //2000,
-	TIMEOUT_MAX_COUNT = 3
+	TIMEOUT_IN_MICROS = 250,
+	TIMEOUT_MAX_COUNT = 4000
 };
 
 typedef void			(*t_sighandler)(int, siginfo_t *, void *);
@@ -83,6 +91,7 @@ void		pretty_error(char *s);
  */
 void		signal_bind(t_sighandler handler);
 void		signal_listen(t_appupdater updater);
+void		signal_connect(t_appupdater updater);
 
 /*
  * Bit Buffer functions (bit_buf.c bit_buf_ext.c)
