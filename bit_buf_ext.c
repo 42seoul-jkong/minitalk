@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 14:50:50 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/11 21:27:29 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/12 12:17:51 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ size_t	bit_buf_append(t_bit_buf *p, const void *buf, size_t nbyte)
 	return (nbit);
 }
 
-int	bit_buf_terminate(t_bit_buf *p, int null)
+int	bit_buf_terminated(t_bit_buf *p, int null)
 {
 	size_t	offset;
 	int		bit_index;

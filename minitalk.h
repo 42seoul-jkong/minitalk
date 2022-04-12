@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 02:59:42 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/11 21:11:05 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/12 12:17:54 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 
 typedef unsigned long	t_bit_set;
 
-enum	e_bit_set_constant
+enum e_bit_set_constant
 {
 	BIT_COUNT = 8,
 	BITSET_MAX = sizeof(t_bit_set) * BIT_COUNT
@@ -42,22 +42,33 @@ typedef struct s_bit_buf
 	size_t		limit;
 }	t_bit_buf;
 
-/*
- * 0.0025sec * 4cnt for 1msg/0.01sec.
- * to sufficient, use 0.002sec * 3cnt
- */
-enum	e_timeout_constant
-{
-	TIMEOUT_IN_MICROS = 20000000, //2000,
-	TIMEOUT_MAX_COUNT = 3
-};
+typedef struct s_client	t_client;
 
-typedef struct s_client
+struct s_client
 {
 	pid_t		pid;
 	t_bit_buf	*buf;
 	int			fail;
-}	t_client;
+	t_client	*next;
+};
+
+typedef enum e_client_operation
+{
+	GET,
+	HEAD,
+	PUT,
+	DELETE,
+}	t_client_operation;
+
+/*
+ * 0.0025sec * 4cnt for 1msg/0.01sec.
+ * to sufficient, use 0.002sec * 3cnt
+ */
+enum e_timeout_constant
+{
+	TIMEOUT_IN_MICROS = 2000000, //2000,
+	TIMEOUT_MAX_COUNT = 3
+};
 
 typedef void			(*t_sighandler)(int, siginfo_t *, void *);
 typedef int				(*t_appupdater)(void);
@@ -82,7 +93,12 @@ void		bit_buf_retain(t_bit_buf *p);
 int			bit_buf_get_bit(t_bit_buf *p);
 void		bit_buf_put_bit(t_bit_buf *p, int val);
 size_t		bit_buf_append(t_bit_buf *p, const void *buf, size_t nbyte);
-int			bit_buf_terminate(t_bit_buf *p, int null);
+int			bit_buf_terminated(t_bit_buf *p, int null);
+
+/*
+ * Bit Client Operation functions (bit_client.c)
+ */
+t_client	*client_operation(t_client_operation op, pid_t arg);
 
 /*
  * Forty-Two Library functions (libft*.c)

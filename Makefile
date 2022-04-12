@@ -16,15 +16,16 @@
 CC = cc
 RM = rm -f
 
-SRCS_BASE = minitalk.c signal.c\
+SRCS_BASE = minitalk.c signal.c \
+			bit_client.c \
 			bit_buf.c bit_buf_ext.c \
-			safe_mem.c safe_io.c\
+			safe_mem.c safe_io.c \
 			libft.c libft_try_atoi.c
 OBJECTS_DIR = objs/
 HEADER = minitalk.h
 
 TARGET_SERVER = server
-SRCS_SERVER = $(SRCS_BASE) server_app.c
+SRCS_SERVER = $(SRCS_BASE) server_app.c bit_server.c
 OBJS_SERVER = $(addprefix $(OBJECTS_DIR), $(SRCS_SERVER:.c=.o))
 
 TARGET_CLIENT = client
